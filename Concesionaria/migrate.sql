@@ -38,7 +38,7 @@ OPEN CUR
 	fetch CUR into @sucId,@sucDireccion,@sucMail,@sucTelefono,@sucCiudad
 	while @@FETCH_STATUS = 0
 	BEGIN
-	insert into gd_esquema.Sucursal(ID_SUCURSAL,SUCURSAL_DIRECCION,SUCURSAL_MAIL,SUCURSAL_TELEFONO,SUCURSAL_CIUDAD) 
+	insert into gd_esquema.Sucursal(SUCURSAL_ID,SUCURSAL_DIRECCION,SUCURSAL_MAIL,SUCURSAL_TELEFONO,SUCURSAL_CIUDAD) 
 	values (@sucId,@sucDireccion,@sucMail,@sucTelefono,@sucCiudad)
 	fetch CUR into @sucId,@sucDireccion,@sucMail,@sucTelefono,@sucCiudad
 	end	

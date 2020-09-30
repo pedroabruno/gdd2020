@@ -1,5 +1,4 @@
 --Creacion de estructuras
-BEGIN
 CREATE TABLE gd_esquema.Cliente (
 CLIENTE_ID [numeric](18, 0) IDENTITY PRIMARY KEY,
 CLIENTE_APELLIDO [nvarchar](255) NULL,
@@ -81,6 +80,3 @@ FACTURA_SUCURSAL numeric(18,0) FOREIGN KEY REFERENCES gd_esquema.Sucursal(SUCURS
 FACTURA_CLIENTE numeric(18,0) FOREIGN KEY REFERENCES gd_esquema.Cliente(CLIENTE_ID),
 FACTURA_PRECIO decimal(18,2)
 );
-
-END
-GO

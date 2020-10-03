@@ -1,4 +1,4 @@
---Creacion de estructuras
+-- Creacion de estructuras
 CREATE TABLE gd_esquema.Cliente (
 CLIENTE_ID [decimal](18, 0) IDENTITY PRIMARY KEY,
 CLIENTE_APELLIDO [nvarchar](255) NULL,
@@ -10,7 +10,7 @@ CLIENTE_MAIL [nvarchar](255) NULL
 );
 
 CREATE TABLE gd_esquema.Sucursal (
-SUCURSAL_ID [decimal](18, 0) IDENTITY PRIMARY KEY,
+SUCURSAL_ID [decimal](18, 0) PRIMARY KEY,
 SUCURSAL_DIRECCION [nvarchar](255) NULL,
 SUCURSAL_MAIL [nvarchar](255) NULL,
 SUCURSAL_TELEFONO [decimal](18, 0) NULL,

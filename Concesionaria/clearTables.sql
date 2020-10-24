@@ -1,6 +1,10 @@
 drop table gd_esquema.Item;
-drop table gd_esquema.Operacion;
-drop table gd_esquema.Tipo_Operacion;
+drop table gd_esquema.Item_Compra_Auto;
+drop table gd_esquema.Item_Compra_Autoparte;
+drop table gd_esquema.Item_Factura_Auto;
+drop table gd_esquema.Item_Factura_Autoparte;
+drop table gd_esquema.Compra;
+drop table gd_esquema.Factura;
 drop table gd_esquema.Auto;
 drop table gd_esquema.Tipo_Transmision;
 drop table gd_esquema.Tipo_Caja;

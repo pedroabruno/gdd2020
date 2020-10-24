@@ -1,7 +1,12 @@
 -- Se cargan datos de la tabla 'cliente'
 insert into gd_esquema.Cliente(CLIENTE_APELLIDO,CLIENTE_NOMBRE,CLIENTE_DIRECCION,CLIENTE_DNI,CLIENTE_FECHA_NAC,CLIENTE_MAIL) 
 select distinct CLIENTE_APELLIDO,CLIENTE_NOMBRE,CLIENTE_DIRECCION,CLIENTE_DNI,CLIENTE_FECHA_NAC,CLIENTE_MAIL 
-from gd_esquema.Maestra;
+from gd_esquema.Maestra
+where CLIENTE_APELLIDO is not null
+union
+select distinct FAC_CLIENTE_APELLIDO,FAC_CLIENTE_NOMBRE,FAC_CLIENTE_DIRECCION,FAC_CLIENTE_DNI,FAC_CLIENTE_FECHA_NAC,FAC_CLIENTE_MAIL 
+from gd_esquema.Maestra m
+where FAC_CLIENTE_APELLIDO is not null;
 
 -- Se cargan datos de la tabla 'sucursal'
 insert into gd_esquema.Sucursal(SUCURSAL_ID,SUCURSAL_DIRECCION,SUCURSAL_MAIL,SUCURSAL_TELEFONO,SUCURSAL_CIUDAD)

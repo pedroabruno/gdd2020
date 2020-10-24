@@ -1,4 +1,3 @@
-drop table gd_esquema.Item;
 drop table gd_esquema.Item_Compra_Auto;
 drop table gd_esquema.Item_Compra_Autoparte;
 drop table gd_esquema.Item_Factura_Auto;

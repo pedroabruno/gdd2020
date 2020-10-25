@@ -59,44 +59,41 @@ FROM gd_esquema.Maestra
 WHERE AUTO_PARTE_CODIGO IS NOT NULL;
 
 -- Se cargan datos de Compras
-begin
-	select 
-		CLIENTE_APELLIDO,CLIENTE_DNI,CLIENTE_MAIL,
-		COMPRA_NRO,COMPRA_FECHA,COMPRA_CANT,COMPRA_PRECIO,
-		CAST(SUBSTRING(SUCURSAL_MAIL, 12, 1) as numeric) AS sucursal, 
-		(select a.AUTO_ID from gd_esquema.Auto a where a.AUTO_PATENTE = m.AUTO_PATENTE) AS auto_id, 
-		AUTO_PARTE_CODIGO AS AUTOPARTE_ID
-	into #tempCompras
-	from gd_esquema.Maestra m
-	where FACTURA_NRO is null;
+select 
+	CLIENTE_APELLIDO,CLIENTE_DNI,CLIENTE_MAIL,
+	COMPRA_NRO,COMPRA_FECHA,COMPRA_CANT,COMPRA_PRECIO,
+	CAST(SUBSTRING(SUCURSAL_MAIL, 12, 1) as numeric) AS sucursal, 
+	(select a.AUTO_ID from gd_esquema.Auto a where a.AUTO_PATENTE = m.AUTO_PATENTE) AS auto_id, 
+	AUTO_PARTE_CODIGO AS AUTOPARTE_ID
+into #tempCompras
+from gd_esquema.Maestra m
+where FACTURA_NRO is null;
 	
-	insert into gd_esquema.Compra(COMPRA_CLIENTE,COMPRA_NRO,COMPRA_FECHA,COMPRA_PRECIO,COMPRA_SUCURSAL)
-	select 
-		(select CLIENTE_ID from gd_esquema.Cliente c where c.CLIENTE_APELLIDO = t.CLIENTE_APELLIDO and c.CLIENTE_DNI = t.CLIENTE_DNI and c.CLIENTE_MAIL = t.CLIENTE_MAIL) cliente,
-		COMPRA_NRO,
-		COMPRA_FECHA,
-		sum(isnull(COMPRA_CANT,1)*COMPRA_PRECIO) precio,
-		sucursal
-	from #tempCompras t
-	group by CLIENTE_APELLIDO,CLIENTE_DNI,CLIENTE_MAIL,COMPRA_NRO,COMPRA_FECHA,sucursal;
+insert into gd_esquema.Compra(COMPRA_CLIENTE,COMPRA_NRO,COMPRA_FECHA,COMPRA_PRECIO,COMPRA_SUCURSAL)
+select 
+	(select CLIENTE_ID from gd_esquema.Cliente c where c.CLIENTE_APELLIDO = t.CLIENTE_APELLIDO and c.CLIENTE_DNI = t.CLIENTE_DNI and c.CLIENTE_MAIL = t.CLIENTE_MAIL) cliente,
+	COMPRA_NRO,
+	COMPRA_FECHA,
+	sum(isnull(COMPRA_CANT,1)*COMPRA_PRECIO) precio,
+	sucursal
+from #tempCompras t
+group by CLIENTE_APELLIDO,CLIENTE_DNI,CLIENTE_MAIL,COMPRA_NRO,COMPRA_FECHA,sucursal;
 
-	-- Se cargan datos de la tabla 'Compra_Auto'
-	INSERT INTO gd_esquema.Item_Compra_Auto (ITEM_COMPRA_NRO, ITEM_AUTO_ID, ITEM_CANTIDAD, ITEM_PRECIO)
-	SELECT COMPRA_NRO, AUTO_ID, ISNULL(COMPRA_CANT,1), COMPRA_PRECIO
-	FROM #tempCompras
-	WHERE AUTO_ID IS NOT NULL
-	GROUP BY COMPRA_NRO,AUTO_ID,COMPRA_PRECIO;
+-- Se cargan datos de la tabla 'Compra_Auto'
+INSERT INTO gd_esquema.Item_Compra_Auto (ITEM_COMPRA_NRO, ITEM_AUTO_ID, ITEM_CANTIDAD, ITEM_PRECIO)
+SELECT COMPRA_NRO, AUTO_ID, sum(ISNULL(COMPRA_CANT,1)), COMPRA_PRECIO
+FROM #tempCompras
+WHERE AUTO_ID IS NOT NULL
+GROUP BY COMPRA_NRO,AUTO_ID,COMPRA_PRECIO;
 
-	-- Se cargan datos de la tabla 'Compra_Autoparte'
-	INSERT INTO gd_esquema.Item_Compra_Autoparte (ITEM_COMPRA_NRO, ITEM_AUTOPARTE_ID, ITEM_CANTIDAD, ITEM_PRECIO)
-	SELECT COMPRA_NRO, AUTOPARTE_ID, SUM(COMPRA_CANT), COMPRA_PRECIO
-	FROM #tempCompras
-	WHERE AUTOPARTE_ID IS NOT NULL
-	GROUP BY COMPRA_NRO,AUTOPARTE_ID,COMPRA_PRECIO;
+-- Se cargan datos de la tabla 'Compra_Autoparte'
+INSERT INTO gd_esquema.Item_Compra_Autoparte (ITEM_COMPRA_NRO, ITEM_AUTOPARTE_ID, ITEM_CANTIDAD, ITEM_PRECIO)
+SELECT COMPRA_NRO, AUTOPARTE_ID, SUM(COMPRA_CANT), COMPRA_PRECIO
+FROM #tempCompras
+WHERE AUTOPARTE_ID IS NOT NULL
+GROUP BY COMPRA_NRO,AUTOPARTE_ID,COMPRA_PRECIO;
 
-	drop table #tempCompras
-end
-
+drop table #tempCompras;
 
 -- Se cargan datos de la tabla 'factura'
 INSERT INTO gd_esquema.Factura(FACTURA_NRO, FACTURA_FECHA, FACTURA_SUCURSAL, FACTURA_CLIENTE, FACTURA_PRECIO)

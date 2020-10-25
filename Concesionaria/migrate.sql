@@ -7,7 +7,6 @@ union
 select distinct FAC_CLIENTE_APELLIDO,FAC_CLIENTE_NOMBRE,FAC_CLIENTE_DIRECCION,FAC_CLIENTE_DNI,FAC_CLIENTE_FECHA_NAC,FAC_CLIENTE_MAIL 
 from gd_esquema.Maestra m
 where FAC_CLIENTE_APELLIDO is not null;
-CREATE INDEX IX_CLIENTE_DNI ON gd_esquema.Cliente(CLIENTE_DNI);
 
 -- Se cargan datos de la tabla 'sucursal'
 insert into gd_esquema.Sucursal(SUCURSAL_ID,SUCURSAL_DIRECCION,SUCURSAL_MAIL,SUCURSAL_TELEFONO,SUCURSAL_CIUDAD)
@@ -71,13 +70,14 @@ where FACTURA_NRO is null;
 	
 insert into gd_esquema.Compra(COMPRA_CLIENTE,COMPRA_NRO,COMPRA_FECHA,COMPRA_PRECIO,COMPRA_SUCURSAL)
 select 
-	(select CLIENTE_ID from gd_esquema.Cliente c where c.CLIENTE_APELLIDO = t.CLIENTE_APELLIDO and c.CLIENTE_DNI = t.CLIENTE_DNI and c.CLIENTE_MAIL = t.CLIENTE_MAIL) cliente,
+	c.CLIENTE_ID cliente,
 	COMPRA_NRO,
 	COMPRA_FECHA,
 	sum(isnull(COMPRA_CANT,1)*COMPRA_PRECIO) precio,
 	sucursal
 from #tempCompras t
-group by CLIENTE_APELLIDO,CLIENTE_DNI,CLIENTE_MAIL,COMPRA_NRO,COMPRA_FECHA,sucursal;
+	join gd_esquema.Cliente c on c.CLIENTE_DNI = t.CLIENTE_DNI and c.CLIENTE_APELLIDO = t.CLIENTE_APELLIDO and c.CLIENTE_MAIL = t.CLIENTE_MAIL
+group by CLIENTE_ID,COMPRA_NRO,COMPRA_FECHA,sucursal;
 
 -- Se cargan datos de la tabla 'Compra_Auto'
 INSERT INTO gd_esquema.Item_Compra_Auto (ITEM_COMPRA_NRO, ITEM_AUTO_ID, ITEM_CANTIDAD, ITEM_PRECIO)

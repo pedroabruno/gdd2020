@@ -1,8 +1,74 @@
+USE [GD2C2020]
+GO
+
 -- Creacion de esquema
 IF (NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'NAPOLITANA_CON_FRITAS')) 
 BEGIN
     EXEC ('CREATE SCHEMA [NAPOLITANA_CON_FRITAS] AUTHORIZATION [dbo]')
 END
+GO
+
+-- Dropeo de tablas
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Item_Compra_Auto')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Item_Compra_Auto
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Item_Compra_Autoparte')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Item_Compra_Autoparte
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Item_Factura_Auto')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Item_Factura_Auto
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Item_Factura_Autoparte')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Item_Factura_Autoparte
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Compra')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Compra
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Factura')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Factura
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Auto')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Auto
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Autoparte')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Autoparte
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Modelo')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Modelo
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Tipo_Transmision')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Tipo_Transmision
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Tipo_Caja')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Tipo_Caja
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Tipo_Auto')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Tipo_Auto
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Fabricante')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Fabricante
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Cliente')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Cliente
+GO
+
+IF (EXISTS (SELECT * FROM sys.objects WHERE name = 'Sucursal')) 
+	DROP TABLE NAPOLITANA_CON_FRITAS.Sucursal
+GO
+
 
 -- Creacion de estructuras
 CREATE TABLE NAPOLITANA_CON_FRITAS.Cliente (

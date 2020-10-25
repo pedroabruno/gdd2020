@@ -69,7 +69,7 @@ begin
 	into #tempCompras
 	from gd_esquema.Maestra m
 	where FACTURA_NRO is null;
---	drop table #tempCompras
+	
 	insert into gd_esquema.Compra(COMPRA_CLIENTE,COMPRA_NRO,COMPRA_FECHA,COMPRA_PRECIO,COMPRA_SUCURSAL)
 	select 
 		(select CLIENTE_ID from gd_esquema.Cliente c where c.CLIENTE_APELLIDO = t.CLIENTE_APELLIDO and c.CLIENTE_DNI = t.CLIENTE_DNI and c.CLIENTE_MAIL = t.CLIENTE_MAIL) cliente,
@@ -94,4 +94,6 @@ begin
 	FROM #tempCompras
 	WHERE AUTOPARTE_ID IS NOT NULL
 	GROUP BY COMPRA_NRO,AUTOPARTE_ID,COMPRA_PRECIO;
+
+	drop table #tempCompras
 end

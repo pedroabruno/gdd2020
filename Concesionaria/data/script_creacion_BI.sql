@@ -428,7 +428,7 @@ JOIN NAPOLITANA_CON_FRITAS.BI_Compra_Auto AS C ON C.MODELO_ID = V.MODELO_ID
 GROUP BY V.MODELO_ID;
 GO
 
--- Vista de Autoparte: Ganancias promedio por Sucursal y Mes
+-- Vista de Autoparte: Ganancias por Sucursal y Mes
 CREATE VIEW NAPOLITANA_CON_FRITAS.VW_Autoparte_Ganancia AS
 SELECT V.MES_ID, V.SUCURSAL_ID, SUM(V.PRECIO) - SUM(C.PRECIO) AS GANANCIAS
 FROM NAPOLITANA_CON_FRITAS.BI_Venta_Autoparte AS V
